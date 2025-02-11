@@ -1,0 +1,129 @@
+﻿@page
+@model ApplicationSecurityICA2.Pages.RegisterModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Register";
+}
+<div class="container" style="max-width:600px; margin-top:50px;">
+    <div class="form-container">
+        <h2 class="text-center mb-4">🔐 Secure Registration</h2>
+        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+        {
+            <div class="alert alert-success alert-dismissible fade show">
+                @Model.SuccessMessage
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            <div class="row g-3">
+                <!-- First and Last Name -->
+                <div class="col-md-6">
+                    <label asp-for="InputUser.FirstName" class="form-label">First Name</label>
+                    <input asp-for="InputUser.FirstName" class="form-control" autocomplete="given-name" />
+                    <span asp-validation-for="InputUser.FirstName" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="InputUser.LastName" class="form-label">Last Name</label>
+                    <input asp-for="InputUser.LastName" class="form-control" autocomplete="family-name" />
+                    <span asp-validation-for="InputUser.LastName" class="text-danger"></span>
+                </div>
+                <!-- Personal Info -->
+                <div class="col-12">
+                    <label asp-for="InputUser.Gender" class="form-label">Gender</label>
+                    <select asp-for="InputUser.Gender" class="form-select" required>
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                    <span asp-validation-for="InputUser.Gender" class="text-danger"></span>
+                </div>
+                <div class="col-12">
+                    <label asp-for="InputUser.NRIC" class="form-label">NRIC</label>
+                    <input asp-for="InputUser.NRIC" class="form-control" autocomplete="off" />
+                    <span asp-validation-for="InputUser.NRIC" class="text-danger"></span>
+                </div>
+                <!-- Email -->
+                <div class="col-12">
+                    <label asp-for="InputUser.Email" class="form-label">Email</label>
+                    <input asp-for="InputUser.Email" class="form-control" autocomplete="email" />
+                    <span asp-validation-for="InputUser.Email" class="text-danger"></span>
+                </div>
+                <!-- Password -->
+                <div class="col-12">
+                    <label asp-for="InputUser.Password" class="form-label">Password</label>
+                    <input asp-for="InputUser.Password" type="password" class="form-control" autocomplete="new-password" id="passwordInput" />
+                    <span asp-validation-for="InputUser.Password" class="text-danger"></span>
+                    <div class="strength-meter mt-2">
+                        <div class="bar"></div>
+                        <div class="text"></div>
+                    </div>
+                </div>
+                <!-- Confirm Password -->
+                <div class="col-12">
+                    <label asp-for="InputUser.ConfirmPassword" class="form-label">Confirm Password</label>
+                    <input asp-for="InputUser.ConfirmPassword" type="password" class="form-control" autocomplete="new-password" />
+                    <span asp-validation-for="InputUser.ConfirmPassword" class="text-danger"></span>
+                </div>
+                <!-- Date of Birth -->
+                <div class="col-12">
+                    <label asp-for="InputUser.DateOfBirth" class="form-label">Date of Birth</label>
+                    <input asp-for="InputUser.DateOfBirth" type="date" class="form-control" />
+                    <span asp-validation-for="InputUser.DateOfBirth" class="text-danger"></span>
+                </div>
+                <!-- Resume Upload -->
+                <div class="col-12">
+                    <label class="form-label">📄 Upload Resume (PDF/DOCX)</label>
+                    <input asp-for="InputUser.ResumeFile" type="file" class="form-control" accept=".pdf,.docx" required />
+                    <span asp-validation-for="InputUser.ResumeFile" class="text-danger"></span>
+                </div>
+                <!-- About Me -->
+                <div class="col-12">
+                    <label asp-for="InputUser.WhoAmI" class="form-label">About Me</label>
+                    <textarea asp-for="InputUser.WhoAmI" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="InputUser.WhoAmI" class="text-danger"></span>
+                </div>
+                <!-- Submit Button -->
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary w-100 py-2">Register Now</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include zxcvbn for password strength checking -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
+    <script>
+        $(document).ready(function () {
+            const strengthColors = [
+                '#ff6b6b',
+                '#ff9f43',
+                '#feca57',
+                '#48dbfb',
+                '#1dd1a1'
+            ];
+            $('#passwordInput').on('input', function () {
+                const password = $(this).val();
+                const result = zxcvbn(password);
+                const strength = result.score;
+                $('.strength-meter .bar').css({
+                    'width': `${(strength + 1) * 20}%`,
+                    'background': strengthColors[strength],
+                    'height': '5px'
+                });
+                const feedback = $('.strength-meter .text');
+                feedback.html(`
+                    <div class="password-feedback">
+                        <div class="strength">Strength: ${['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'][strength]}</div>
+                        ${result.feedback.warning ? `<div class="warning">⚠️ ${result.feedback.warning}</div>` : ''}
+                        ${result.feedback.suggestions.length ? `<div class="suggestions">💡 ${result.feedback.suggestions.join(' ')}</div>` : ''}
+                    </div>
+                `);
+            });
+        });
+    </script>
+}

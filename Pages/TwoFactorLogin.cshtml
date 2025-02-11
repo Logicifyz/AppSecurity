@@ -1,0 +1,29 @@
+﻿@page
+@model ApplicationSecurityICA2.Pages.TwoFactorLoginModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Two-Factor Authentication";
+}
+<div class="container" style="max-width:400px; margin-top:50px;">
+    <div class="form-container">
+        <h2 class="mb-3 text-center">Two-Factor Authentication</h2>
+        <p>Please enter the two-factor code sent to your email.</p>
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">
+                @Model.ErrorMessage
+            </div>
+        }
+        <form method="post">
+            <div class="mb-3">
+                <label asp-for="TwoFactorCode" class="form-label"></label>
+                <input asp-for="TwoFactorCode" class="form-control" />
+                <span asp-validation-for="TwoFactorCode" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Verify</button>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

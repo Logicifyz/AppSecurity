@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - MyApp</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        /* Global Dark Mode with Purple Accent */
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        a {
+            color: #9b59b6;
+        }
+        /* Navbar */
+        .navbar {
+            background-color: #1f1f1f;
+        }
+
+        .navbar-brand, .nav-link {
+            color: #9b59b6 !important;
+        }
+        /* Form Containers */
+        .form-container {
+            background-color: #1f1f1f;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        /* Form Controls */
+        .form-control {
+            background-color: #333;
+            color: #e0e0e0;
+            border: 1px solid #444;
+        }
+
+            .form-control:focus {
+                border-color: #9b59b6;
+                box-shadow: 0 0 5px rgba(155, 89, 182, 0.5);
+            }
+        /* Buttons */
+        .btn-primary {
+            background-color: #9b59b6;
+            border-color: #9b59b6;
+        }
+
+            .btn-primary:hover {
+                background-color: #8e44ad;
+                border-color: #8e44ad;
+            }
+        /* Alerts */
+        .alert {
+            background-color: #343a40;
+            color: #d4edda;
+        }
+        /* Error container */
+        .error-container {
+            background-color: #1f1f1f;
+            border: 1px solid #444;
+            padding: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+    </style>
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <!-- App Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/Home">Ace Job Agency</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto">
+                    <!-- Adjust the links as needed -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Register">Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        @RenderBody()
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

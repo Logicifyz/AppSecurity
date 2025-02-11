@@ -1,0 +1,122 @@
+﻿@page
+@model ApplicationSecurityICA2.Pages.HomeModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Profile";
+}
+
+<style>
+    /* Toggle Switch CSS */
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+    /* Optional: style for the 2FA status text */
+    .toggle-label {
+        font-size: 1.1rem;
+        margin-left: 10px;
+        vertical-align: middle;
+    }
+</style>
+
+<div class="container my-5">
+    <!-- Profile Card with Glassmorphism Effect -->
+    <div class="profile-card p-4">
+        <!-- Profile Header -->
+        <div class="d-flex align-items-center">
+            <!-- User Information -->
+            <div class="ms-4">
+                <h2>@Model.LoggedInUser.FirstName @Model.LoggedInUser.LastName</h2>
+                <p class="text">@Model.LoggedInUser.Email</p>
+            </div>
+        </div>
+
+        <!-- About Me Section -->
+        <div class="mt-4">
+            <h4>About Me</h4>
+            <p>@Html.Raw(Model.LoggedInUser.WhoAmI)</p>
+        </div>
+
+        <!-- Additional Information Section -->
+        <div class="mt-4">
+            <h4>Additional Information</h4>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p><strong>Date of Birth:</strong> @Model.LoggedInUser.DateOfBirth.ToShortDateString()</p>
+                    <p><strong>Gender:</strong> @Model.LoggedInUser.Gender</p>
+                </div>
+                <div class="col-sm-6">
+                    <p><strong>NRIC:</strong> @Model.LoggedInUser.NRIC</p>
+                    @if (!string.IsNullOrEmpty(Model.LoggedInUser.ResumePath))
+                    {
+                        <p><strong>Resume:</strong> <a href="@Url.Content(Model.LoggedInUser.ResumePath)" target="_blank">View Resume</a></p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Two-Factor Authentication Toggle -->
+        <div class="mt-4">
+            <h4>Two-Factor Authentication</h4>
+            <form method="post" asp-page-handler="ToggleTwoFactor" id="toggle2faForm">
+                <label class="switch">
+                    <input type="checkbox" name="twoFactorEnabled" id="twoFactorCheckbox"
+                    @(Model.LoggedInUser.TwoFactorEnabled ? "checked" : "")
+                           onchange="document.getElementById('toggle2faForm').submit();" />
+                    <span class="slider"></span>
+                </label>
+                <span class="toggle-label">
+                    @(Model.LoggedInUser.TwoFactorEnabled ? "ON" : "OFF")
+                </span>
+            </form>
+        </div>
+
+        <!-- Logout Button -->
+        <div class="mt-4 text-end">
+            <form method="post" asp-page-handler="Logout">
+                <button type="submit" class="btn btn-outline-danger">Logout</button>
+            </form>
+        </div>
+    </div>
+</div>
